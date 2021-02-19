@@ -1,0 +1,137 @@
+------------ LEARNING GIT --------------
+
+1. Instalar Git
+2. Configurations: 
+En el terminal de git: 
+$git config --global user.name "MinombnreenGit"
+$git config --global user.email "miemailenGit"
+$git config --global core.editor "notepad.exe"
+$git config --global color.ui true
+Se pueden hacer más configuraciones, para ver cuales hemos hecho:
+$cd ~
+$cat .gitconfig
+3. git help (To look for some hel and different commands)
+3. Init git: Create a folder, go to this folder in the terminal
+$git init
+4. Make changes
+5. Add a file to the directory (Introduce the changes in the file manually)
+Once we've done the instruction above:
+$git add .
+With the dot we add every changes in the file
+6. Create a commit for the changes:
+$git commit -m "Describe the changes in the commit"
+7. See git logs  (Information about the different commits made)
+In the directory of the project: $git log
+$git help log (to see useful information about the different logs)
+Example 1: $git log --grep="Bugfix" (It is to found all the commits with the word "Bugfix")
+Example 2: Output the log for all of Karen's commits labeled "refactor" during March 2019
+$git log --since=2019-03-01 --until=2019-03-31 --author="Karen" --grep="refactor"
+8. The three trees (See image)
+9. If we create a new script, we will have to add it: $git add script.py and then we will
+have to create a commit for it: $git commit -m "Add script.py"
+10. In the directory where the project is located in your computer, do: $git status
+to know the status of the tree and if there is any file which has not been updated to the 
+project. 
+11. To see the changes made before adding and making a commit, we can use the next command:
+$git diff -> It will show us the changes made in the different projects. Git diff compares 
+the working directory with the staging tree. So, just doing a git add command, we will not 
+be able to see the changes with git add. 
+To see the difference highlighted by colors, make: $git diff --color-words
+To be able to see the diferences between the repository and the staged tree (once we have done
+the git add command but we havent done the git commit command), we have to use the next command:
+$git diff --staged or $git diff --cached (This two commands are exactly the same)
+12. To delete a file: $git rm name_of_the_file -> After that we will have to make a git commit to 
+delete the file completely from the repository.
+13. Renaming files: It is like moving to another places but instead of moving we are going to rename it:
+$git mv name_original new_name
+To move to another folder, for example, to a new folder called Alejandro which is inside our repo:
+$git mv name_original Alejandro/final_name
+
+Working on a real project: (California example)
+1. First, we need to go to the directory and make an git init to initialize a git repository in this folder
+2. Then, if we make a git status, we will see that there are so many files which haven't been added and commited yet.
+We do it
+3. If we make changes in the files and then we see the differences (git diff) it is possible to see a list of differences:
+To move on this list, we need to know the next clues:
+b - Go backward in the list
+f - Go forward in the list
+q - exit from the list
+$git diff --color-words -> to see in color only the words that are different
+4. To add and commit all files in the same time (Go from working stage to repository):
+$git commit -a -m "Commit Message"
+5. To look for an specific change, we can do: $git show number_of_commit_reference, where the number of commit reference is
+the commit number (40 HEX) in the $git log command. Just introducing first 4 digits, it will find the commit. 
+6. To compare different commits to see what have changed among them, use:
+$git diff 4numbers_first_commit..4numbers_second_commit
+To see the differences in colors among this two commits use:
+$git diff 4numbers_first_commit..4numbers_second_commit --color-words
+To compare a commit with the lastest commit, we can use the HEAD pointer, because it will be pointing to the lastest commit:
+$git diff 4numbers_first_commit..HEAD --color-words
+7. To create multiline commit messages (messages of commit with several lines), we have to do the next steps:
+$git commit -a -> After this command, our default editor will be opened and there we will write the different lines for our commit. 
+Then save and close this editor and autimatically the commit will be done. Then you can see this commit with $git log.
+To see the logs in one line, just do git log --oneline
+8 CREATE ATOMIC COMMITS: An atomic commit is an smaller commit, which is focused in specific changes. When we have done several changes
+in different scripts, it would be interesting to separate its changes in different commits. To do it, we have to use $git add script_to_atomize
+to the scripts we want to include in an atomic commit. (do different git add commands for the different commits. After the add command, do the
+$git commit -m "Message for the atomic commit".
+The atomic commits are useful to divide the changes and to make it easier for project partners to find a code change.
+
+UNDO CHANGES:
+If we change a file and save it, then when we do git status, git will notify that this file has changed. Before adding it to the stage, we can
+undo the changes:
+$git checkout -- file_to_undo
+
+
+UNSTAGE FILES:
+$git reset HEAD file_to_unstage
+
+
+AMEND COMMIT TO ANOTHER COMMIT:
+To amend is to take some changes made before in other commits, send it to the stage, and merge its changes with some news in the same commit.
+Steps: 
+1. Make a change number 1.
+2. Add and commit this change. ($git add file / git commit -m "Change 1")
+3. Make change number 2.
+4. Add this change to the stage ($git add file2)
+5. Amend this commit with the commit made before ($git commit --amend -m "Amended message")
+
+REVERT OLD VERSIONS:
+If we want to go to old versions, we have to go to the log, take the sha (40 HEX but use only 5 moreless to identify it)
+$git checkout <hashnumber> -- filename
+After that I will have revert my code to an old version
+To see the changes we can do $git diff --staged, we have to put --staged because we are changing from repository to the stage
+
+REVERT A COMMIT:
+To revert a change made in an specific commit in the past, we have to do the next:
+$git revert <sha_of_the_commit>
+
+REMOVE UNTRACKED FILES:
+Untrakced files are the ones that are only in the working directory, neither in the stage nor in the repository. 
+To remove this files we have to do: 
+$git clean -n (will give us info about which files would be removed)
+$git clean -f (delete the untracked files)
+$git reset HEAD filename (send the file to the working tree
+
+------Use .gitignore files
+There are some files which we dont want git to be tracking continuosly.
+We create a .gitignore file in our file of the repository and inside this file we indicate the name of the files we want to be ignored:
+Examples:
+prueba.py
+*.zip
+*.gz
+log/*.log
+log/*.log.[0-9]
+We can say "except" like ignore all .gz except alejandro.gz. For it we will do in the next way: !alejandro.gz
+Git will notify us that the .gitignore file has changed. We add it and then commit it. With that, the ignored files won't be tracked. 
+Logs and databases are good files to ignore. Operating system generated files are other good example of ignored files. 
+
+Ignore global files. To ignore files in all the repos:
+$git ignore --global core.excludesfile ~/.gitignore_global
+In the .gitignore_global file we insert all the files we want to be ignored globally
+
+To ignore a tracked file:
+$git rm --cached filename
+
++Create a .gitkeep file to track an empty file
+

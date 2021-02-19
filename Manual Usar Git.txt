@@ -1,0 +1,110 @@
+******** USAR GIT **********
+Podemos tener dos métodos para usar Git:
+1. Tener creado un repositorio en GitHub y de ahi exportarlo de forma remota a una carpeta local en nuestro ordenador. Posteriormente iremos 
+realizando diferentes cambios en nuestro fichero local y cuando hayamos finalizado dichos cambios haremos un push a nuestro repositorio de GitHub para
+subir de nuevo los nuevos cambios realizados. 
+2. Crear el repositorio en local en nuestro ordenador y posteriormente enviarlo remotamente a un repositorio de GitHub.
+
+Vamos a explocar ambos, comencemos por el primero de ellos:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1. Crear repositorio en GitHub
+2. Copiar el enlace del repositorio. Hay dos opciones, HTTPS o SSH, para SSH hay que configurar la clave pública y privada, asi que alomejor es más sencillo hacerlo 
+con el enlace HTTPS que hay en la pestaña verde de Download Code.
+3. Abrir Git Bash en nuestro ordenador.
+4. Acceder al directorio en el que queremos descargar el repositorio de GitHub, por ejemplo en nuestro caso en descargas: 
+$cd Downloads
+5. En dicho directorio hacemos un git clone para descargar el respositorio:
+$git clone <enlace HTTPS o SSH del repo de GitHub>
+6. En este momento ya tendremos descargado nuestro repositorio de GitHub en nuestro ordenador de forma local. Para saber qué tenemos en dicho repo:
+$ls -> Ver que archivos tenemos en nuestro directorio
+$ls -la -> Para ver todos los archivos junto con los archivos ocultos de git
+7. Una vez que tenemos ya todo nuestro repositorio en local, ya podremos trabajar con los diferentes archivos. Para trabajar con ello debemos tener en cuenta
+el arbol de tres niveles:
+ 
+NIVEL 1 - Working Directory: nivel más bajo, este es el nivel en el que se encuentran los archivos que han sido modificados 
+NIVEL 2 - Staging Directory: Segundo nivel, en este nivel se almacenan los codigos tras haber realizado un $git add . Es el paso previo a subir al respositorio los códigos
+NIVEL 3 - Repository: Nivel mmás alto, aqui ya se han subido las cosas al repositorio, tras realizar el comando $git commit -m "Mensaje del commit".
+
+Tras analizar los diferentes niveles, vamos a explicar la lógica de trabajo con git:
+7.1 Modificamos un script y le damos a guardar en el propio IDE.
+7.2 En el terminal, introducimos un $git status para ver el estado de git. En este caso aparecerá en rojo un script, indicándonos que ha sido modificado. 
+Para ver que diferencias se han dado, podemos hacer:
+$git diff. Aparecerán los cambios realizados. Para ver en color únicamente los cambios hacemos:
+$git diff --color-words
+7.3 Tras esto, debemos añadir dicho script al nivel 2 del arbol, al staging. Para ello realizamos:
+$git add <filename>
+7.4 Tras esto, podemos ver que diferencias han ocurrido entre el nivel 3 y el 2. En este caso haremos $git diff --cached. Al añadir el --cached veremos la diferencia de nuestro
+entre código entre los niveles 2 y 3. Sin el cached veíamos la diferencia del código entre los niveles 1 y 2. 
+7.5 Ahora que está en el nivel 2, debemos realizar un commit para subir al repositorio los cambios de nuestro código. Un commit sirve para dejar constancia con un mensaje cuales 
+han sido los cambios realizados en dicho código. Para realizar el commit hacemos:
+$git commit -m "Added something to the code"
+7.6 Ahora ya está nuestra modificación subida en el repositorio, podemos ver cuales son los diferentes cambios y commits que se han realizado. Para ello utilizamos el siguiente comando:
+$git log
+7.7 Una vez que tenemos todos los cambios realizados y subidos al repositorio en local, debemos enviarlo a GitHub. Para ello realizaremos una función PUSH:
+$git push
+7.8 Podemos crear un fichero .gitignore en el que introduzcamos cuales son los ficheros que no queremos que sea trackeado por git. 
+7.9 Si hemos realizado cambios en un codigo y los guardamos y no lo hemos subido al segundo nivel (no hemos hecho $git add <file>), pero deseamos deshacerlos y volver a tener el código
+previo a los cambios, hacemos el siguiente comando:
+$git checkout -- <nombre fichero a deshacer cambios)
+7.10 Si queremos bajar un nivel nuestro fichero (por ejemplo está en el nivel 2 y queremos bajarlo al nivel 1):
+$git reset HEAD <nombre fichero a bajar>
+7.11 Si queremos volver a una versión pasada de un commit, tenemos que ver el SHA de ese commit (SHA es un numero de 40 HEX que identifica ese commit), usamos el $git log
+vemos los commits y nos quedamos con los primeros 5 dígitos del commit que queramos. Posteriormente utilizamos:
+$git checkout <hasnumber> -- <nombre fichero a volver a ese commit>
+7.12 Hay que crear Atomic Commits, que son commits reducidos y específicos para cambios de un mismo tema. En este caso lo que haremos es subir al segundo nivel todos los códigos
+relacionados y con el mismo tema. Después haremos un mismo commit para todos ellos.
+7.13 En el caso en el que los cámbios se realicen desde GitHub y se quieran enviar a nuestro repositorio local, deberemos hacer un PULL:
+$git pull
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+En este segundo caso lo haremos al revés, crearemos el repositorio en local en nuestro ordenador y posteriormente lo enviaremos de forma remota a un repositorio de GitHub:
+1. Crear un fichero que va a ser el repositorio
+2. Creamos el fichero Readme.md
+$echo "# demo1" >> README.md
+3. Añadimos el fichero README.md al segundo nivel del árbol:
+$git add README.md
+4. Hacemos un $git status si queremos ver el estado de nuestros ficheros
+5. Hacemos un commit de los cambios para pasarlo al siguiente nivel. 
+$git commit -m "First commit"
+6. Ahora indicamos el repositorio remoto al que queremos hacer push de los ficheros que tenemos en local. Para ello necesitamos coger la URL HTTPS o SSH del repositorio de GitHub:
+$git remote add origin <url_gitHub_repo>
+7.Push the files to the remote repository
+$git push -u origin master
+
+8. Se puede trabajar en branches diferentes al main. Para crear nuevos branches tenemos que hacer:
+$git branch <nombre_nuevo_branch>
+9. Para cambiar el branch que se está utilizando:
+$git checkout branchname
+10. Añadir un fichero a ese branch:
+$echo "#content">> filename.txt
+11. Create a branch remotely and push files to it branch:
+$git push --set-upstream origin <branchname>
+12. Al hacer un push a ese banch, posteriormente en GitHub deberemos hacer un merge de las modificaciones creadas en dicho branch al branch 
+principal para que se actualicen los cambios en este. Otra opción es hacer el merge desde terminal antes de hacer el push a GitHub, de esta 
+forma haremos el push a GitHub con el branch ya unido al branch principal.
+Para hacer el merge del branch secundario al principal desde terminal debemos primero volver a situarnos en el branch principal:
+$git checkout master
+Posteriormente aplicamos el merge:
+$git merge <branch_secundario>
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+*************************************************************************************************************************************************
+FORK de repositorio ajeno: Finalidad: modificar codigos de repositorios ajenos y posteriormente hacerles un pull para que el dueño pueda ver 
+los cambios propuestos y en caso de que los acepte, los suba al repositorio principal.
+Hacer un fork a otro repositorio:
+1. Entramos en un repositorio ajeno, clicamos en la pestaña de "fork" y de ahí cogemos el enlace URL de HTTPS o SSH. 
+2. Tras esto, en el terminal de git, accedemos a nuestro repositorio en el que queremos recibir el fork del repositorio externo y hacemos un
+git clone para poder trabajar en él:
+$git clone <url_HTTPS/SSH_repositorio_ajeno_fork>
+3. Tras esto realizamos los cambios que deseemos en dicho repositorio ajeno que se encuentra dentro de nuestro repositorio (porque le hemos
+hecho el git clone dentro de dicho repo)
+4. Posteiromente añadimos todo al staging tree y hacemos un commit de dichos cambios:
+$git add . (Con el punto hacemos que se añadan todos los ficheros modificados)
+$git commit -m "Mensaje"
+5. Ahora vamos en GitHub al repositorio fork que hemos modificado y vemos los cambios. Podemos darle a la pestaña "Compare" (Esta se encuentra
+cerca del botón verde de descargar el código) para ver los cambios. Hacemos un pull request para proponerle los cambios al autor. En caso de que
+este los confirme, se subirán dichos cambios al repositorio principal
+*************************************************************************************************************************************************
+

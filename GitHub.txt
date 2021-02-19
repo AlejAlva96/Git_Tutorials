@@ -1,0 +1,33 @@
+*********** GITHUB ************
+1. Create account
+2. Create repository
+3. Create file/ edit file -> Commit file
+4. Create branch (Copy of the master repo and in this brach create new code)
+5. Once created, make a pull request to upload the changes to the master
+6. GitHub via command line (GitBash): 
+6.1 Activate ssh public and private key
+6.2 Create new repo in GitHub
+6.3 Follow the next steps:
+$cd Downloads
+$mkdir demo_test1
+$cd demo_test1
+-To create a readmd file use echo "# demo1" >> README.md
+-Initialize the directory git init
+-Create and add a README.md file. You can use a normal text editor depending on which OS you are using. git add README.md
+-Check the status of the file git status
+-Commit the changes git commit -m "first commit"
+-Add the origin where we have to push the file. This is the SSHRepositoryLink you copied when you created the repository. git remote add origin git@github.com:mskill/demo1.git
+-Push the file git push -u origin master
+PUSH is to send our changes from the remote repository (Git Bash) to the GitHub
+PULL is to receive the files from the GitHub
+7. To create a branch from the remote terminal (Git Bash): $git branch name_of_branch
+8. To set this branch as branch to use: $git checkout mybranch
+When make $git status, you will see than now we are using the branch created called mybranch instead of the master branch
+9. To create a file in a branch from terminal and include some text do:
+$echo "# Extract of code on this branch" >> script.py
+After that, make the git add script.py and the $git commit -m "Message in the commit"
+10. Para pasar los datos de un branch al master:
+10.1 Nos ponemos en el master: $git checkout master
+10.2 Introduce the next command: $git merge branch_to_merge
+
+
