@@ -1,0 +1,166 @@
+*********** COMANDOS LINUX ***********
++ GESTION DE PAQUETES:
+APT-GET
+-Install -> $ sudo apt-get install
+-Update -> $ sudo apt-get update
+-Upgrade -> $ sudo apt-get upgrade
+-Search -> $ sudo apt search
+-Remove -> $ sudo apt-get remove
+-Purge ->  $ sudo apt-get purge
+
++ Navegación entre directorios:
+/Ver archivos en directorios:
+$ ls -> ver lista de archivos y carpetas dentro del directorio en el que estemos
+$ ls -l -> ver lista de los archivos pero de forma vertical (Igual que ls pero te los muestra verticales, más visual)
+$ ls -a -> ver lista de TODOS los archivos
+$ ls -la -> ver lista de TODOS los archivos (archivos de programa ocultos también) y los muestra de forma vertical (Igual que ls -a pero los muestra verticales)
+Tenemos ls/ls -l para ver los archivos y ls -a/ls -la para ver todos los archivos que hay
+/Moverse entre directorios:
+$ cd <nombre_directorio> -> acceder a un directorio determinado
+$ cd .. -> Retroceder una carpeta del directorio en el que estábamos
+$ cd ~ -> Volver al directorio raíz
+$ pwd -> Ver ruta de la carpeta donde estoy
+
++ Manejo de archivos y directorios:
+$ mkdir <nombre_carpeta> -> Crear una nueva en el directorio en el que estemos
+$ rmdir <nombre_carpeta_vacía_a_borrar> -> Borrar una carpeta VACÍA
+$ touch <nombre_archivo> -> Crear un archivo, ej: $ touch fichero.txt
+$ rm <nombre_archivo_a_borrar> -> Borrar un archivo, ej: $ rm fichero.txt
+$ rm -r <nombre_archivo_a_borrar> -> Borramos carpetas y archivos que haya dentro de la carpeta especificada
+Por ejemplo estamos en el directorio documentos, y dentro de ese directorio hay una carpeta que se llama alejandro que tiene dentro un fichero.txt.
+Si hacemos rm -r alejandro, borraremos la carpeta alejandro y todo lo que haya dentro de ella
+
++ Leer archivos (Suelen ser archivos .txt):
+Dentro del directorio donde esté ese archivo a leer:
+$ cat <nombre_archivo_a_leer> -> Leer el archivo
+$ man cat -> Ver el manual de todo lo que puede hacer cat
+Comandos interesantes de cat:
+$ cat - n <nombre_fichero> -> Ver el texto pero cada linea sale enumerada (Interesante para ver código)
+$ cat -T <nombre_fichero> -> Ver las tabulaciones realizadas en cada linea de código (Interesante para ver código Python donde se han metido tabulaciones, viene indicado con un ^I al 
+lado de cada línea que ha tenido una tabulación). Si han habido dos Tabulaciones se verá como ^I^ICodigo
+$ more <nombre_fichero_a_ver> -> Es otra herramienta muy similar a cat para ver el contenido de archivos .txt
+$ man more -> Para ver el manual del comando more
+
++ Mover y copiar archivos:
+\Copiar archivos:
+Estando dentro del directorio donde se encuentra el archivo que queremos copiar:
+$ cp <nombre_archivo> ../<ruta>/<nuevo_nombre_para_fichero_copiado> -> Aqui estaríamos copiando un archivo en otro fichero distinto y renombrando dicho archivo.
+Ejemplo: $ cp archivo1.txt ../fichero2/archivo2.txt -> Habríamos movido el archivo1.txt al fichero2 y le habríamos renombrado como archivo2.txt. Si no queremos que se cambie el nombre, 
+haríamos: $ cp archivo1.txt ../fichero2
+\Copiar ficheros que contienen archivos:
+Estando dentro del directorio donde se encuentra el fichero que queremos copiar:
+$ cp -R <nombre_fichero> ../<fichero_al_que_queremos_copiar_el_directorio>
+Ejemplo: $ cp -R fichero1 ../fichero2
+\Mover archivos:
+$ mv <nombre_archivo_a_mover> ../<directorio_al_que_movemos> -> Por ejemplo estamos en el path: Documents/fichero1/fichero2 . Si queremos mover un archivo del fichero 2
+a un directorio anterior (fichero1) pues deberíamos hacer: $ mv archivo.txt .. -> Con esto ya lo habríamos hecho. Si hubiesemos querido eso y además cambiarle el nombre al fichero habríamos hecho:
+$ mv archivo2.txt ../nuevoarchivo2-> Se habría guardado en fichero1 este nuevo archivo con el nuevo nombre.
+Si por ejemplo estamos en el path: Documents/fichero1/fichero2 y queremos mover un archivo del fichero 2 al Desktop, entonces tendríamos que retroceder tres escalones y después guardarlo
+en el directorio /Desktop. Para ello haríamos dentro del directorio donde está el fichero2 que deseamos mover:
+$ mv fichero2 ../../../Desktop
+Cada .. es un fichero anterior. Si solo ponemos un .. entonces estaremos moviendo ese archivo que hay dentro de una carpeta a su carpeta anterior.
+Si por ejemplo en Documents tenemos dentro fichero1 y fichero2 y queremos mover el fichero1 entero al fichero2 podemos hacer:
+$ mv fichero1 fichero2
+
++ Dar permisos:
+Cuando hacemos ls -l en un directorio vemos una estructura del tipo:
+drwxrwxr-w 2 alejandro alejandro 4096 feb 25 19.33 fichero2
+Esta estructura viene explicada en el pdf permisos. En cuanto a la importancia, debemos quedaros sobre todo con la primera de las palabras que aparecen:
+La 'd' inicial indica que es un directorio
+En los siguientes: r->read, w->write, x->ejecución
+El rwx inicial hace referencia a los permisos de propietario. En este caso el propietario tiene permiso para las tres acciones: read, write, ejecutar
+El segundo hace referencia a los permisos de grupo. En este caso, también tienen permiso para las 3 cosas. 
+El tercero hace referencia a los permisos para otros. En este caso tenemos un r-x es decir, otros solo pueden leer y ejecutar pero no escribir.
+\Para habilitar permisos debemos hacer uso del comando $ chmod seguido de 3 dígitos. 
+El primero de los dígitos hará referencia a los permisos de propietario, el segundo a los de grupo y el tercero a los otros. Los digitos salen en decimal pero luego se pasan a binario de 3 dígitos haciendo referencia
+el primero de ellos a los permisos de. Por ejemplo un 5 será un 101 lo cual indicará que se le dan permisos de lectura y de ejecución pero no de escritura. Un ejemplo sería:
+$ chmod 736 <nombre_fichero>.  En este caso le habremos dado todos los permisos al propietario (7 -> 111), permiso de escritura y ejecución al grupo (3 -> 011) y permisos de lectura y escritura a los otros (6 -> 110).
+Mirar en el pdf de permisos para aclarar.
+Para dar todos los permisos utilizar:
+$ chmod 777 <nombre_fichero>
+
++ SUPER USUARIO:
+TODO CAMBIO QUE PROVOQUE CAMBIOS EN EL SISTEMA DEBE SER EJECUTADO COMO SUPERUSUARIO (sudo)
+Para evitar tener que dar permisos siempre y evitar el uso de sudo cada vez que queramos hacer una acción que requiera contraseña, podemos cambiar el usuario al usuario 'root' el cual 
+es el superusuario que tiene acceso total al sistema. Para ello hacemos lo siguiente:
+$ sudo su root o $ sudo su -
+Tras esto nos requerirá de introducir la contraseña y posteriormente ya seremos super usuarios y no tendremos que introducir contraseñas. Veremos que somos superusuarios porque en vez
+de tener el $ habrá un # además de que al inicio de cada linea de comando aparecerá un root.
+Si deseamos cambiar a otro usuario del sistema, pondríamos:
+$ sudo su pedro, en vez del $ sudo su - de antes donde el menos era el root por defecto. 
+
++ Cambiar propietario o grupo en archivos:
+Cuando estamos en una carpeta e introducimos un ls -la para ver los archivos que hay en esa carpeta y sus características, podemos ver que tenemos varios campos, dos de ellos son el 
+nombre de propietario y de grupo. Por ejemplo en este caso será alejandro alejandro ya que alejandro es el nombre tanto de propietario como de grupo. Si deseamos cambiar cualquiera 
+de estos dos lo haremos de la siguiente forma:
+$ sudo chown root:alejandro <nombre_fichero/>
+En este caso habremos cambiado el nombre de propietario de alejandro a root. Para hacer esta acción es necesario estar registrado como super usuario, es decir usar sudo o tener el 
+superusuario registrado fijo con $ sudo su root.
+
++ Buscar palabras en archivos de texto:
+Dentro del directorio donde se encuentra el archivo en el que queremos buscar las palabras hacemos:
+$ grep <palabra_a_buscar> <fichero_en_el_que_bucar>
+
++ Buscar id de un proceso:
+$ pgrep <nombre_proceso>
+Ejemplo: Queremos ver id de firefox -> $ pgrep firefox y devolverá un numero de id de dicho proceso.
+
++ Matar procesos:
+-> Por el id: $ kill <id_proceso>
+-> Por el nombre del proceso (matando todos los procesos asociados a este): $ killall <nombre_proceso> Esto es bueno por ejemplo en aplicaciones como chrome que abren varios procesos.
+En este caso haríamos $ killall chrome
+-> Detener un proceso: $ kill -stop <id_proceso>
+-> Continuar el proceso que hemos detenido anteriormente: $ kill -cont <id_proceso> 
+
++ Agregar usuarios desde consola:
+Para ver los usuarios que existen en nuestro sistema, hacemos:
+$ cat /etc/passwd
+Nos sacará una lista grande de usuarios del sistema, si por ejemplo queremos buscar dentro de esa lista sacada por terminal, le añadimos al comando anteriormente introducido un grep:
+$ cat /etc/passwd | grep <nombre_usuario_a_buscar>
+Para agregar un nuevo usuario hacemos:
+$ sudo adduser <nombre_usuario>
+Nos pedirá la contraseña y todo para dicho usuario y con eso ya estará creado dicho usuario
+
++ Cambiar contraseña de un usuario:
+$ sudo passwd <nombre_usuario_a_cambiar_contraseña>
+
++ Eliminar un usuario del sistema:
+$ sudo deluser --remove-home <nombre_usuario>
+
+
++ UTILIZAR NANO:
+- Guardar -> ctrl + o
+- Salir del documento -> ctrl + w
+- Cortar una línea del documento -> ctrl + k
+- Pegar dicha linea -> ctrl + u
+- Copiar texto también se puede hacer como siempre -> ctrl + shift + c
+- Copiar texto también se puede hacer como siempre -> ctrl + shift + v
+- Buscar texto -> ctrl + w
+
++ Ver consumo del sistema desde terminal:
+Para verlo de forma visual: System Monitor
+En la consola ponemos top y nos saldrán datos de rendimiento. Para verlo con mejor detalle y en colores, tenemos htop. Antes de ello hay que instalarlo:
+$ sudo apt-get install htop
+Y posteriormente lanzarlo:
+$ htop
+Nos saldrá una ventana con los rendimientos de todos los procesos, podemos hacer búsquedas de procesos, matarlos, etc.
+
++ Monitor de red por consola:
+Utilizamos la herramienta nethogs para ver el tráfico de datos
+Instalamos nethogs: $ sudo apt-get install nethogs
+Lanzamos nethogs: $ sudo nethogs
+
+
++ ADMINISTRACIÓN DE DISCOS DUROS:
+- Disco duro principal (en Windows sería disco C://) en Linux se llama sda.
+- Al segundo disco se le llama sdb
+- Los lectores de disco CD o DVD los conocemos como scd0 o src0.
+Para ver los discos de forma visual: Disks
+- Para ver desde terminal el almacenamiento, lo que hacemos es usar "df"
+Si ponemos en el terminal $ df , nos saldrán todos los discos que componen el ordenador así como el porcentaje que consumen. 
+Para verlo mejor y con más detalle, es mejor hacer:
+$ df -h
+Si queremos por ejemplo buscar cuales son los diferentes discos importantes, buscamos con grep sobre el comando anterior por ejemplo:
+df -h | grep "/dev/"
+
+
